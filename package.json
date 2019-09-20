@@ -5,7 +5,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint:watch": "npm run lint -- --watch",
-    "lint": "esw src --color --fix"
+    "lint": "esw src --color --fix",
+    "start": "nodemon src/index"
   },
   "author": "romajs",
   "license": "MIT",
@@ -19,7 +20,9 @@
     "eslint-watch": "^6.0.0",
     "husky": "^3.0.5"
   },
-  "dependencies": {},
+  "dependencies": {
+    "crypto-js": "^3.1.9-1"
+  },
   "husky": {
     "hooks": {
       "pre-commit": "npm run lint"
