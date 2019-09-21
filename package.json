@@ -18,10 +18,21 @@
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^4.0.1",
     "eslint-watch": "^6.0.0",
-    "husky": "^3.0.5"
+    "husky": "^3.0.5",
+    "pino-pretty": "^3.2.1"
   },
   "dependencies": {
-    "crypto-js": "^3.1.9-1"
+    "convict": "^5.1.0",
+    "crypto-js": "^3.1.9-1",
+    "dotenv": "^8.1.0",
+    "koa": "^2.8.1",
+    "koa-accesslog": "0.0.2",
+    "koa-body": "^4.1.1",
+    "koa-compress": "^3.0.0",
+    "koa-cors": "0.0.16",
+    "koa-helmet": "^5.1.0",
+    "koa-router": "^7.4.0",
+    "pino": "^5.13.3"
   },
   "husky": {
     "hooks": {
