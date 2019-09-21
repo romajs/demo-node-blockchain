@@ -20,12 +20,12 @@ function checkDifficulty (difficulty, hash) {
   return hash.substr(0, difficulty) === '0'.repeat(difficulty);
 }
 
-function nextNonce (block) {
-  return updateHash({ ...block, nonce: block.nonce + 1 });
-}
-
 function updateHash (block) {
   return { ...block, hash: calculateHash(block) };
+}
+
+function nextNonce (block) {
+  return updateHash({ ...block, nonce: block.nonce + 1 });
 }
 
 function trampoline (func) {

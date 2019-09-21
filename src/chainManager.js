@@ -36,6 +36,12 @@ getChain().then(chain => {
 
 const appendBlock = (block) => getChain()
   .then(chain => chain.concat(block))
+  .then(chain => {
+    if (blockchain.validateChain(chain)) {
+      return Promise.resolve(chain);
+    }
+    return Promise.reject(chain);
+  })
   .then(chain => fileWrite(CHAIN_FILE_NAME, toJSON(chain)));
 
 module.exports = {
