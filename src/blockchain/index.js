@@ -46,11 +46,9 @@ function mineBlock (difficulty, block) {
   return trampoline(mine(nextNonce(block)));
 }
 
-function addBlock (chain, data) {
-  const { hash: previousHash } = chain[chain.length - 1];
-  const block = { timestamp: Date.now(), data, previousHash, nonce: 0 };
-  const newBlock = mineBlock(4, block);
-  return chain.concat(newBlock);
+function forgeBlock (data, previousHash) {
+  const block = { data, previousHash, nonce: 0, timestamp: Date.now() };
+  return mineBlock(4, block);
 }
 
 function validateChain (chain) {
@@ -71,6 +69,6 @@ function validateChain (chain) {
 
 module.exports = {
   generateGenesisBlock,
-  addBlock,
+  forgeBlock,
   validateChain,
 };

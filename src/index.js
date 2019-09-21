@@ -1,3 +1,3 @@
-const httpServer = require('./httpServer');
+const server = require('./server');
 
-httpServer.start();
+server.start();

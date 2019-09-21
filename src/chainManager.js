@@ -10,7 +10,7 @@ const fileWrite = util.promisify(fs.writeFile);
 const fileOpen = util.promisify(fs.open);
 const fileRead = util.promisify(fs.readFile);
 
-const toJSON = JSON.stringify;
+const toJSON = object => JSON.stringify(object, null, 2);
 const fromJSON = JSON.parse;
 
 const getFile = () => fileStat(CHAIN_FILE_NAME)
@@ -23,9 +23,23 @@ const getFile = () => fileStat(CHAIN_FILE_NAME)
 
 const getChain = () => getFile().then(fileRead).then(fromJSON);
 
+const getLatestBlock = () => getChain().then(chain => chain[chain.length - 1]);
+
+const getLatestHash = () => getLatestBlock().then(block => block.hash);
+
 getChain().then(chain => {
   if (chain.length === 0) {
-    const newChain = blockchain.generateGenesisBlock();
+    const newChain = [blockchain.generateGenesisBlock()];
     return fileWrite(CHAIN_FILE_NAME, toJSON(newChain));
   }
 });
+
+const appendBlock = (block) => getChain()
+  .then(chain => chain.concat(block))
+  .then(chain => fileWrite(CHAIN_FILE_NAME, toJSON(chain)));
+
+module.exports = {
+  getChain,
+  getLatestHash,
+  appendBlock,
+};
