@@ -18,6 +18,7 @@ const config = convict({
       format: 'port',
       default: 8000,
       env: 'HTTP_PORT',
+      arg: 'http-port,',
     },
   },
   logger: {

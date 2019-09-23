@@ -1,17 +1,25 @@
+const EventTypes = require('../../models/EventTypes');
 const Router = require('koa-router');
-const socket = require('../../socket');
+// const socketIOClient = require('../../socket-io-client');
+const socketIOServer = require('../../socket-io-server');
+const Transaction = require('../../models/Transaction');
+const transactionsPool = require('../../transactionsPool');
 
 const router = new Router({ prefix: '/api/v1' });
 
 router.get('/transactions', (ctx) => {
-  const transaction = {
-    sender: 'ks829fh28192j28d9dk9',
-    receiver: 'ads8d91w29jsm2822910',
-    amount: 0.0023,
-    currency: 'BTC',
-  };
-  socket.io.emit('transaction', transaction);
-  ctx.body = [];
+  ctx.body = transactionsPool.get();
+});
+
+router.post('/transactions', (ctx) => {
+  // TODO: validate transaction schema
+  const { amount, receiver, sender } = ctx.request.body;
+  const transaction = new Transaction(amount, receiver, sender);
+  socketIOServer.io.emit(EventTypes.TRANSACTION_ADD, transaction);
+  if (transactionsPool.size() > 1) {
+    socketIOServer.io.emit(EventTypes.MINE_START, transactionsPool.next());
+  }
+  ctx.body = { id: transaction.id };
 });
 
 module.exports = router;

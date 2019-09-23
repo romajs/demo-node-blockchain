@@ -1,6 +1,6 @@
-const blockchain = require('../blockchain');
-const chainManager = require('../chainManager');
-const logger = require('../logger');
+const blockchain = require('./blockchain');
+const chainManager = require('./chainManager');
+const logger = require('./logger');
 
 process.on('message', async (transaction) => {
   const previousHash = await chainManager.getLatestHash();
