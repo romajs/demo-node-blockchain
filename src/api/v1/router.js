@@ -1,11 +1,22 @@
+const chainManager = require('../../chainManager');
 const EventTypes = require('../../models/EventTypes');
 const Router = require('koa-router');
-// const socketIOClient = require('../../socket-io-client');
 const socketIOServer = require('../../socket-io-server');
 const Transaction = require('../../models/Transaction');
 const transactionsPool = require('../../transactionsPool');
+const nodeController = require('../../controllers/nodeController');
 
 const router = new Router({ prefix: '/api/v1' });
+
+router.get('/chain', (ctx) => {
+  return chainManager.getChain()
+    .then((chain) => { ctx.body = chain; });
+});
+
+router.get('/nodes', nodeController.listNodes);
+
+// TODO: validate node schema
+router.post('/nodes', nodeController.addNode);
 
 router.get('/transactions', (ctx) => {
   ctx.body = transactionsPool.get();
