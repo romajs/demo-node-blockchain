@@ -17,32 +17,37 @@ const getFile = () => fileStat(CHAIN_FILE_NAME)
   .then(() => fileOpen(CHAIN_FILE_NAME))
   .catch((err) => {
     if (err.code === 'ENOENT') {
-      return fileWrite(CHAIN_FILE_NAME, toJSON([]));
+      const chain = [blockchain.generateGenesisBlock()];
+      return fileWrite(CHAIN_FILE_NAME, toJSON(chain));
     }
   });
 
-const getChain = () => getFile().then(fileRead).then(fromJSON);
+// FIXME:
+const rootChain = [
+  {
+    timestamp: 1569292497300,
+    data: 'Genesis Block',
+    previousHash: '0',
+    hash: '10ba85489847135f3d7cd82bbe20494aa5809f7b10563ff8d5c0c378ec2e40e9',
+  },
+];
+
+const getChain = () => Promise.resolve(rootChain);
 
 const getLatestBlock = () => getChain().then((chain) => chain[chain.length - 1]);
 
 const getLatestHash = () => getLatestBlock().then((block) => block.hash);
 
-getChain().then((chain) => {
-  if (chain.length === 0) {
-    const newChain = [blockchain.generateGenesisBlock()];
-    return fileWrite(CHAIN_FILE_NAME, toJSON(newChain));
-  }
-});
-
 const appendBlock = (block) => getChain()
   .then((chain) => chain.concat(block))
-  .then((chain) => {
-    if (blockchain.validateChain(chain)) {
-      return Promise.resolve(chain);
+  .then((newChain) => {
+    if (blockchain.validateChain(newChain)) {
+      rootChain.push(block);
+      return Promise.resolve(rootChain);
     }
-    return Promise.reject(chain);
-  })
-  .then((chain) => fileWrite(CHAIN_FILE_NAME, toJSON(chain)));
+    return Promise.reject(rootChain);
+  });
+  // .then((chain) => fileWrite(CHAIN_FILE_NAME, toJSON(chain)));
 
 module.exports = {
   getChain,

@@ -1,8 +1,12 @@
 const nodes = [];
 
+const addNode = (node) => nodes.push(node);
+
+const listNodes = () => Object.assign([], nodes);
+
 const nodeRepository = {
-  add: (node) => nodes.push(node),
-  list: () => Object.assign([], nodes),
+  addNode,
+  listNodes,
 };
 
 module.exports = nodeRepository;

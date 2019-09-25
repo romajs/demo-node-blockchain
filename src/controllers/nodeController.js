@@ -1,16 +1,15 @@
 const nodeService = require('../services/nodeService');
 
-const addNode = (ctx) => {
+const addNode = async (ctx) => {
+  // TODO: validate node schema
   const { url } = ctx.request.body;
-  return nodeService.addNode(url).then((node) => {
-    ctx.body = { id: node.id };
-  });
+  const node = await nodeService.addNode(url);
+  ctx.body = { id: node.id };
 };
 
-const listNodes = (ctx) => {
-  return nodeService.listNodes().then((nodes) => {
-    ctx.body = nodes.map((node) => node.toJSON());
-  });
+const listNodes = async (ctx) => {
+  const nodes = await nodeService.listNodes();
+  ctx.body = nodes.map((node) => node.toJSON());
 };
 
 const nodeController = {
