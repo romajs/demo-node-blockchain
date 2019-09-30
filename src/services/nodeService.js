@@ -1,17 +1,17 @@
-const EventTypes = require('../models/EventTypes');
+const SocketEventTypes = require('../models/SocketEventTypes');
 const Node = require('../models/Node');
 const nodeRepository = require('../repository/nodeRepository');
 const socketIOServer = require('../socket-io-server');
 
 const propagateClientEventsToServer = (clientIO, serverIO) => {
-  clientIO.on(EventTypes.TRANSACTION_ADD, (amount, receiver, sender) => {
-    serverIO.emit(EventTypes.TRANSACTION_ADD, amount, receiver, sender);
+  clientIO.on(SocketEventTypes.TRANSACTION_ADD, (amount, receiver, sender) => {
+    serverIO.emit(SocketEventTypes.TRANSACTION_ADD, amount, receiver, sender);
   });
-  clientIO.on(EventTypes.MINE_START, (transaction) => {
-    serverIO.emit(EventTypes.MINE_START, transaction);
+  clientIO.on(SocketEventTypes.MINER_START, (transaction) => {
+    serverIO.emit(SocketEventTypes.MINER_START, transaction);
   });
-  clientIO.on(EventTypes.MINE_STOP, (block) => {
-    serverIO.emit(EventTypes.MINE_STOP, block);
+  clientIO.on(SocketEventTypes.MINER_STOP, (block) => {
+    serverIO.emit(SocketEventTypes.MINER_STOP, block);
   });
 };
 

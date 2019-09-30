@@ -15,7 +15,4 @@ app.use(helmet());
 const apiRouter = require('./api/router');
 app.use(apiRouter.routes());
 
-const apiV1Router = require('./api/v1/router');
-app.use(apiV1Router.routes());
-
 module.exports = app;
