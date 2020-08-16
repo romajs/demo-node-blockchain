@@ -6,7 +6,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint:watch": "npm run lint -- --watch",
     "lint": "esw src --color --fix",
-    "start": "nodemon src/index"
+    "start": "node src/index",
+    "start:dev": "nodemon src/index"
   },
   "author": "romajs",
   "license": "MIT",
@@ -19,7 +20,7 @@
     "eslint-plugin-standard": "^4.0.1",
     "eslint-watch": "^6.0.0",
     "husky": "^3.0.5",
-    "nodemon": "^1.19.2",
+    "nodemon": "^1.19.4",
     "pino-pretty": "^3.2.1"
   },
   "dependencies": {
